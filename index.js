@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // middleware
 const corsOptions = {
@@ -130,6 +130,14 @@ async function run() {
     app.post("/room", async (req, res) => {
       const roomData = req.body;
       const result = await roomsCollection.insertOne(roomData);
+      res.send(result);
+    });
+
+    // get use role
+    app.get("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await usersCollection.findOne(query);
       res.send(result);
     });
 
